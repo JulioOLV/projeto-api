@@ -1,8 +1,16 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  Get,
+} from '@nestjs/common';
 import { ProdutosService } from './produtos.service';
 import { CreateProdutoDto } from './dto/create-produto.dto';
 import { UpdateProdutoDto } from './dto/update-produto.dto';
-import { Produto } from './entities/produto.entity';
+import { Livro } from './models/livro.model';
 
 @Controller('produtos')
 export class ProdutosController {
@@ -14,22 +22,25 @@ export class ProdutosController {
   }
 
   @Get()
-  findAll(): Produto[] {
+  async findAll(): Promise<Livro[]> {
     return this.produtosService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) : Produto {
+  async findOne(@Param('id') id: string): Promise<Livro> {
     return this.produtosService.findOne(+id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateProdutoDto: UpdateProdutoDto) : Produto {
+  async update(
+    @Param('id') id: string,
+    @Body() updateProdutoDto: UpdateProdutoDto,
+  ): Promise<[number]> {
     return this.produtosService.update(+id, updateProdutoDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  async remove(@Param('id') id: string) {
     return this.produtosService.remove(+id);
   }
 }
