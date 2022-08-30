@@ -1,0 +1,29 @@
+version: '3.3'
+
+services:
+  app:
+    build: .
+    command: wait-for db:3306 -t 40 -- ./start.sh
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/home/node/app
+    depends_on:
+      - db
+
+  db:
+    image: mysql:5.7
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: livraria
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: admin
+    ports:
+      - "3306:3306"
+    expose:
+      - "3306"
+    volumes:
+      - ./db:/var/lib/mysql
+volumes:
+  db:
